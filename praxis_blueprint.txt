@@ -1,0 +1,418 @@
+16. Development Plan (Android / Gemini-Assisted)
+
+This plan assumes:
+
+Native Android development
+
+Kotlin + Jetpack Compose
+
+Clean Architecture
+
+Gemini used as an in-IDE assistant (code generation, explanations, test scaffolding, refactoring)
+
+16.1 Project Initialization
+Objectives
+
+Establish a scalable, modular Android codebase.
+
+Ensure Gemini can reason cleanly about architecture boundaries.
+
+Steps
+
+Create a new Android project:
+
+Empty Compose Activity
+
+Minimum SDK: API 26
+
+Target SDK: API 34
+
+Configure Gradle:
+
+Enable version catalogs (libs.versions.toml)
+
+Configure Kotlin JVM target
+
+Enable Compose compiler metrics (optional)
+
+Define module structure:
+
+app
+core:domain
+core:data
+core:ui
+feature:auth
+feature:onboarding
+feature:goals
+feature:matching
+feature:messaging
+
+Gemini Usage
+
+Generate initial module build.gradle.kts files
+
+Explain dependency boundaries
+
+Verify Clean Architecture compliance
+
+16.2 Core Domain Layer
+Objectives
+
+Implement pure business logic with no Android dependencies.
+
+Enable deterministic testing and AI reasoning.
+
+Tasks
+
+Define entities:
+
+User
+
+GoalTree
+
+GoalNode
+
+Match
+
+Message
+
+Define enums:
+
+GoalDomain
+
+GoalStatus
+
+MatchStatus
+
+MessageStatus
+
+Implement use cases:
+
+CreateGoalTree
+
+UpdateGoalProgress
+
+CalculateCompatibilityScore
+
+RecalibrateGoalWeights
+
+Gemini Usage
+
+Generate Kotlin data classes
+
+Review immutability and value semantics
+
+Generate unit tests for matching logic
+
+Refactor formulas into readable functions
+
+16.3 Data Layer
+Objectives
+
+Provide persistence, networking, and synchronization.
+
+Support offline-first behavior.
+
+Tasks
+
+Local Storage
+
+Room database
+
+DAOs for users, goals, messages, matches
+
+SQLCipher / encrypted storage
+
+Networking
+
+Retrofit interfaces
+
+DTO ↔ domain mappers
+
+Auth token interceptor
+
+Repositories
+
+Implement repository interfaces from domain
+
+Merge local + remote sources
+
+Handle cache invalidation
+
+Gemini Usage
+
+Generate DAO boilerplate
+
+Create mapper functions
+
+Explain coroutine + Flow usage
+
+Detect repository anti-patterns
+
+16.4 Authentication Feature
+Objectives
+
+Secure user identity and session management.
+
+Tasks
+
+Firebase Auth integration:
+
+Email / phone
+
+Google Sign-In
+
+Token handling:
+
+Short-lived access tokens
+
+Refresh logic
+
+Biometric unlock
+
+Facial verification flow:
+
+CameraX capture
+
+ML Kit face detection
+
+Backend verification trigger
+
+Gemini Usage
+
+Scaffold ViewModels and UI state
+
+Generate CameraX setup code
+
+Explain ML Kit face detection callbacks
+
+Help debug permission and lifecycle issues
+
+16.5 Goal Tree Feature
+Objectives
+
+Allow creation, editing, visualization, and weighting of goal trees.
+
+Tasks
+
+Goal tree editor UI (Compose):
+
+Node list / hierarchy
+
+Weight sliders
+
+Progress input
+
+Validation rules
+
+Persistence via repository
+
+Reactive updates via Flow
+
+Gemini Usage
+
+Generate Compose UI components
+
+Suggest state hoisting strategies
+
+Optimize recomposition
+
+Generate preview composables
+
+16.6 Matching Feature
+Objectives
+
+Implement deterministic compatibility scoring.
+
+Keep logic explainable and testable.
+
+Tasks
+
+Matching use case implementation
+
+AI similarity hook (placeholder or backend stub)
+
+Match discovery screen
+
+Match detail view (shared goals + score)
+
+Gemini Usage
+
+Translate math formulas into Kotlin
+
+Optimize nested loops
+
+Generate test cases with sample trees
+
+Detect floating-point precision issues
+
+16.7 Messaging Feature
+Objectives
+
+Real-time, goal-restricted communication.
+
+Tasks
+
+WebSocket client
+
+Message queueing (offline support)
+
+Conversation ViewModel
+
+Message UI with Compose
+
+Typing indicators
+
+Gemini Usage
+
+Generate WebSocket handling code
+
+Explain concurrency and reconnection logic
+
+Help debug race conditions
+
+Create fake data sources for testing
+
+16.8 Feedback & Recalibration
+Objectives
+
+Enable post-interaction grading and goal-weight updates.
+
+Tasks
+
+Feedback UI (private, bilateral)
+
+Mapping grades to weight deltas
+
+Aggregation logic
+
+Trigger goal tree recalibration
+
+Gemini Usage
+
+Formalize grading → weight rules
+
+Generate recalibration functions
+
+Create simulation tests
+
+Validate edge cases (spam, bias)
+
+16.9 UI System
+Objectives
+
+Maintain consistency and performance.
+
+Tasks
+
+Design system:
+
+Colors
+
+Typography
+
+Spacing
+
+Shared UI components in core:ui
+
+Navigation graph
+
+Gemini Usage
+
+Generate reusable Compose components
+
+Review accessibility compliance
+
+Optimize navigation arguments
+
+16.10 Testing Strategy
+Objectives
+
+Prevent regressions and logic drift.
+
+Tasks
+
+Unit tests:
+
+Domain logic
+
+Matching and recalibration
+
+Integration tests:
+
+Room + repository
+
+UI tests:
+
+Core flows
+
+Gemini Usage
+
+Generate JUnit and MockK tests
+
+Explain flaky test causes
+
+Improve test readability
+
+16.11 CI/CD and Deployment
+Objectives
+
+Automate quality checks and releases.
+
+Tasks
+
+GitHub Actions:
+
+Build
+
+Test
+
+Lint
+
+Build variants:
+
+debug
+
+staging
+
+release
+
+Play Store internal testing
+
+Gemini Usage
+
+Generate CI YAML
+
+Diagnose build failures
+
+Suggest Gradle optimizations
+
+16.12 Recommended Gemini Usage Pattern
+
+Inside Android Studio:
+
+Ask Gemini to:
+
+Generate first drafts, not final code
+
+Explain unfamiliar APIs
+
+Refactor for clarity
+
+Manually review:
+
+Architecture boundaries
+
+Security-sensitive code
+
+Business logic correctness
+
+Gemini functions best as:
+
+a rapid scaffolding tool
+
+a code reviewer
+
+a documentation explainer
+
+Not as an autonomous decision-maker.

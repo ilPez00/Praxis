@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PRAXIS</string>
+    <string name="server_client_id">YOUR_SERVER_CLIENT_ID</string> <!-- TODO: Replace with your actual server client ID -->
+</resources>

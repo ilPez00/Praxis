@@ -1,0 +1,143 @@
+SESSION SETUP (Paste Once)
+
+You are assisting in a Kotlin Android project using Clean Architecture.
+Domain layer is pure Kotlin (no Android imports).
+Respect module boundaries.
+Prefer immutability, explicit naming, and testable functions.
+Do not invent features.
+Explain assumptions briefly before code.
+
+core:domain
+
+Entities
+
+Generate Kotlin data classes for: [entities].
+Constraints: pure Kotlin, immutable, enums where appropriate.
+
+Use Case
+
+Implement use case [Name].
+Inputs: [ ] Outputs: [ ].
+Constraints: deterministic, no side effects.
+Generate unit tests.
+
+Matching Logic
+
+Translate this formula into readable Kotlin: [formula].
+Name intermediates clearly.
+Add KDoc + tests.
+
+core:data
+
+Room + DAO
+
+Generate Room entities + DAO for: [models].
+Separate from domain models.
+Include mappers.
+Use Flow.
+
+Repository
+
+Implement offline-first repository combining Room + Retrofit for: [feature].
+Explain data flow briefly.
+
+Retrofit
+
+Generate Retrofit interface for endpoints: [ ].
+Suspend functions only.
+Add DTO → domain mappers.
+
+core:ui
+
+Components
+
+Create stateless Compose components for: [ ].
+Parameters for state + callbacks.
+Include previews.
+
+Navigation
+
+Define Compose navigation for: [screens].
+Type-safe args.
+No business logic.
+
+feature:auth
+
+Auth ViewModel
+
+Generate ViewModel for email/password + Google sign-in.
+StateFlow UI state.
+No Firebase calls outside repository.
+
+Facial Verification
+
+Scaffold CameraX + ML Kit face detection.
+Lifecycle-aware.
+Explain backend insertion points.
+
+feature:goals / onboarding
+
+Goal Tree UI
+
+Generate Compose UI for goal tree editing
+(title, progress, weight).
+State hoisted to ViewModel.
+
+Validation
+
+Implement domain-level goal validation.
+Explicit error types.
+Add tests.
+
+feature:matching
+
+Match Discovery
+
+Create ViewModel for match discovery.
+Input: goal tree.
+Output: matches + scores.
+Flow-based.
+
+Score Explanation
+
+Generate deterministic function explaining compatibility score.
+
+feature:messaging
+
+WebSocket
+
+Generate coroutine-based WebSocket client.
+Reconnect logic.
+Expose events as Flow.
+
+Conversation VM
+
+Create ViewModel with offline queue + ordering guarantees.
+
+feature:feedback
+
+Grading Logic
+
+Map feedback grades → weight deltas.
+Pure function.
+Configurable thresholds.
+
+Recalibration
+
+Implement goal tree recalibration use case.
+Deterministic + explainable.
+Add tests.
+
+TESTING / REFACTORING
+
+Tests
+
+Generate JUnit tests for this class.
+Include edge cases.
+Avoid unnecessary mocks.
+
+Refactor
+
+Refactor for clarity and testability.
+Preserve behavior and public APIs.
+Explain changes briefly.
