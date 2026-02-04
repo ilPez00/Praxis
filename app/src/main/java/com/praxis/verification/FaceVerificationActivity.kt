@@ -1,8 +1,8 @@
-package com.praxis.verification
+package com.praxis.app.verification
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.praxis.R
+import com.praxis.app.R
 
 class FaceVerificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

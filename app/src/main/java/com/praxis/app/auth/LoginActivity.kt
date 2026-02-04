@@ -1,11 +1,15 @@
 package com.praxis.app.auth
-
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.PromptInfo
+import androidx.biometric.BiometricPrompt.AuthenticationCallback
+import androidx.biometric.BiometricPrompt.AuthenticationResult
+import androidx.core.content.ContextCompat
+// ... other imports you already have (e.g. AppCompatActivity, Executor)
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 
 class LoginActivity : AppCompatActivity() {
 

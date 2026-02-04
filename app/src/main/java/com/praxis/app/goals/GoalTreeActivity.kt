@@ -1,5 +1,5 @@
 // GoalTreeActivity.kt
-package com.example.praxis
+package com.praxis.app.goals
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,8 +8,9 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.view.LayoutInflater
 import android.view.View
+import com.praxis.app.R
 
-class `GoalTreeActivity.kt` : AppCompatActivity() {
+class GoalTreeActivity : AppCompatActivity() {
 
     private lateinit var rootGoalInput: EditText
     private lateinit var addChildButton: Button

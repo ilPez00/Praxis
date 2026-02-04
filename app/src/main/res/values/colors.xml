@@ -3,4 +3,5 @@
     <color name="terminal_background">#000000</color>
     <color name="terminal_text">#FFFFFF</color>
     <color name="terminal_cursor">#FFFFFF</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
 </resources>

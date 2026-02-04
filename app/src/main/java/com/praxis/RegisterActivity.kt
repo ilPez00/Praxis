@@ -1,8 +1,37 @@
+package com.praxis
+
+import android.graphics.drawable.AnimationDrawable
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import com.google.android.material.textfield.TextInputLayout
+import com.praxis.app.R
+
 class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        val title = findViewById<TextView>(R.id.title)
+        val subtitle = findViewById<TextView>(R.id.subtitle)
+        val btn_google = findViewById<Button>(R.id.btn_google)
+        val divider_container = findViewById<LinearLayout>(R.id.divider_container)
+        val til_email_phone = findViewById<TextInputLayout>(R.id.til_email_phone)
+        val til_password = findViewById<TextInputLayout>(R.id.til_password)
+        val til_confirm = findViewById<TextInputLayout>(R.id.til_confirm)
+        val btn_register = findViewById<Button>(R.id.btn_register)
+        val tv_back = findViewById<TextView>(R.id.tv_back)
+        val et_email_phone = findViewById<EditText>(R.id.et_email_phone)
+        val et_password = findViewById<EditText>(R.id.et_password)
+        val et_confirm = findViewById<EditText>(R.id.et_confirm)
 
         // Start blinking cursor animation
         (btn_register.compoundDrawablesRelative[2] as? AnimationDrawable)?.start()
@@ -21,6 +50,8 @@ class RegisterActivity : AppCompatActivity() {
         )
 
         viewsToAnimate.forEach { (view, delay) ->
+            view.alpha = 0f
+            view.translationX = -30f
             view.animate()
                 .alpha(1f)
                 .translationX(0f)
