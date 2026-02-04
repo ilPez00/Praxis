@@ -68,15 +68,8 @@ fun PraxisApp() {
         
         is PraxisUiState.Home -> {
             currentUser?.let { user ->
-                HomeScreen(
-                    currentUser = user,
-                    matches = matches,
-                    onFindMatches = {
-                        viewModel.findMatches()
-                    },
-                    onMatchClick = { match ->
-                        viewModel.openChat(match.userId)
-                    }
+                HomeScreenWithTree(
+                    goals = user.goalTree
                 )
             }
         }
