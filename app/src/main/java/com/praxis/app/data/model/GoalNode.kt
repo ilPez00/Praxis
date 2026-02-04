@@ -14,6 +14,7 @@ data class GoalNode(
     val id: String,
     val domain: Domain,
     val name: String,
+    val details: String = "",
     var weight: Double = 1.0,
     var progress: Int = 0, // 0-100
     val subGoals: MutableList<GoalNode> = mutableListOf()
