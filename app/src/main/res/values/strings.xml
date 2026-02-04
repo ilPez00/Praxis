@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">PRAXIS</string>
-    <string name="server_client_id">YOUR_SERVER_CLIENT_ID</string> <!-- TODO: Replace with your actual server client ID -->
+    <string name="app_name">Praxis</string>
+    <string name="default_web_client_id">AIzaSyDlGjiRxkTXqNrzuSJo9Om0Yuys-_JoDrQ.apps.googleusercontent.com</string>
 </resources>

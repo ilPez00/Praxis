@@ -1,12 +1,6 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -19,13 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PRAXIS"
+rootProject.name = "Praxis"
 include(":app")
-include(":core:domain")
-include(":core:data")
-include(":core:ui")
-include(":feature:auth")
-include(":feature:onboarding")
-include(":feature:goals")
-include(":feature:matching")
-include(":feature:messaging")

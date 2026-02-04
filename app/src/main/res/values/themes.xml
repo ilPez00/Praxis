@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.PRAXIS" parent="Theme.PRAXIS.Terminal" />
-
-    <style name="Theme.PRAXIS.Terminal" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:statusBarColor">@color/terminal_background</item>
-        <item name="android:windowBackground">@color/terminal_background</item>
-        <item name="android:textColor">@color/terminal_text</item>
-        <item name="colorPrimary">@color/terminal_text</item>
-        <item name="colorOnPrimary">@color/terminal_background</item>
-        <!-- Add other terminal-specific styles here, e.g., font family -->
-    </style>
+    <style name="Theme.Praxis" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

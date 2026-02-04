@@ -1,11 +1,16 @@
 package com.praxis.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import com.praxis.app.data.model.Domain
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+fun Domain.getColor(): Color = when (this) {
+    Domain.CAREER -> Color(0xFF4CAF50)  // Green
+    Domain.INVESTING -> Color(0xFF26A69A)  // Teal
+    Domain.FITNESS -> Color(0xFFE57373)  // Red-ish
+    Domain.ACADEMICS -> Color(0xFFEC407A)  // Pink
+    Domain.MENTAL_HEALTH -> Color(0xFF64B5F6) // Blue
+    Domain.PHILOSOPHY -> Color(0xFF78909C)  // Blue Grey
+    Domain.CULTURE_HOBBIES -> Color(0xFF9CCC65) // Light Green
+    Domain.INTIMACY_ROMANCE -> Color(0xFFFFA726) // Orange
+    Domain.FRIENDSHIP_SOCIAL -> Color(0xFFAB47BC) // Purple
+}
