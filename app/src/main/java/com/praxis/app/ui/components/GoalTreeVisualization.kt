@@ -1,73 +1,78 @@
 package com.praxis.app.ui.components
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.Spring
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.praxis.app.data.model.Domain
 import com.praxis.app.data.model.GoalNode
-import com.praxis.app.ui.theme.getColor // if your getColor is in theme/Color.kt
 import kotlin.math.cos
-import kotlin.math.min
 import kotlin.math.sin
 
 @Composable
 fun GoalTreeVisualization(
     goals: List<GoalNode>,
     modifier: Modifier = Modifier,
-    showLabels: Boolean = true
+    growthProgress: Float = 1f
 ) {
-    var isVisible by remember { mutableStateOf(false) }
-    val growthProgress by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        )
-    )
+    val density = LocalDensity.current
+    val primaryColor = MaterialTheme.colorScheme.primary
 
-    LaunchedEffect(Unit) { isVisible = true }
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    Canvas(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        // Only drawing commands here — NO composables
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val center = Offset(size.width / 2f, size.height / 2f)
-            // ... your center dot, branches, lines, dots ...
+        val centerOrigin = Offset(size.width / 2, size.height / 2)
 
-            // NO GoalLabel calls here!
-        }
+        drawGoalNode(
+            center = centerOrigin,
+            radius = with(density) { 32.dp.toPx() },
+            growthProgress = growthProgress,
+            color = primaryColor
+        )
 
-        // Labels as normal Compose (outside Canvas)
-        if (showLabels) {
-            goals.forEachIndexed { index, goal ->
-                // calculate label position (same math as before)
-                val angle = -90f + (360f / goals.size * index)
-                val rad = Math.toRadians(angle.toDouble())
-                val distance = 100.dp.value + 40.dp.value * growthProgress // Simplified distance
-                val labelX = (cos(rad) * distance).toFloat().dp
-                val labelY = (sin(rad) * distance).toFloat().dp
+        goals.forEachIndexed { index, goal ->
+            val angle = (index * 60f - 120f) * (Math.PI / 180f)
+            val childOffset = Offset(
+                centerOrigin.x + with(density) { 180.dp.toPx() } * cos(angle.toFloat()),
+                centerOrigin.y + with(density) { 140.dp.toPx() } * sin(angle.toFloat())
+            )
 
-                GoalLabel(
-                    goal = goal,
-                    modifier = Modifier
-                        .offset(x = labelX, y = labelY)
-                        .width(120.dp)
-                )
-            }
+            drawLine(
+                color = primaryColor.copy(alpha = 0.6f),
+                start = centerOrigin,
+                end = childOffset,
+                strokeWidth = with(density) { 4.dp.toPx() },
+                cap = StrokeCap.Round
+            )
+
+            drawGoalNode(
+                center = childOffset,
+                radius = with(density) { 24.dp.toPx() },
+                growthProgress = growthProgress * 0.9f,
+                color = primaryColor
+            )
         }
     }
+}
+
+private fun DrawScope.drawGoalNode(
+    center: Offset,
+    radius: Float,
+    growthProgress: Float,
+    color: Color
+) {
+    drawCircle(
+        color = color,
+        radius = radius * growthProgress,
+        center = center
+    )
 }
