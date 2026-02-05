@@ -9,12 +9,16 @@ package com.praxis.app.data.model
  * - weight: User's current priority (higher = more important)
  * - progress: 0-100% completion
  * - subGoals: Children nodes in the tree
+ * - emoji: Visual representation for the goal category
+ * - level: Depth in the hierarchy (0=macrogroup, 1=intermediate, 2=specific, 3=detail)
  */
 data class GoalNode(
     val id: String,
     val domain: Domain,
     val name: String,
     val details: String = "",
+    val emoji: String = "",
+    val level: Int = 0,
     var weight: Double = 1.0,
     var progress: Int = 0, // 0-100
     val subGoals: MutableList<GoalNode> = mutableListOf()
@@ -71,7 +75,43 @@ enum class Domain {
         INTIMACY_ROMANCE -> "Intimacy / Romantic Exploration"
         FRIENDSHIP_SOCIAL -> "Friendship / Social Engagement"
     }
+    
+    fun emoji(): String = when (this) {
+        CAREER -> "💼"
+        INVESTING -> "💰"
+        FITNESS -> "💪"
+        ACADEMICS -> "📚"
+        MENTAL_HEALTH -> "🧠"
+        PHILOSOPHY -> "🤔"
+        CULTURE_HOBBIES -> "🎨"
+        INTIMACY_ROMANCE -> "❤️"
+        FRIENDSHIP_SOCIAL -> "👥"
+    }
 }
+
+/**
+ * Goal hierarchy structure with 4 levels
+ * Level 0 (Macrogroup): Domain-level categories
+ * Level 1 (Intermediate): Subcategories within domains
+ * Level 2 (Specific): Concrete goal types
+ * Level 3 (Detail): User's custom details
+ */
+data class GoalCategory(
+    val emoji: String,
+    val name: String,
+    val subcategories: List<GoalSubcategory>
+)
+
+data class GoalSubcategory(
+    val emoji: String,
+    val name: String,
+    val specificGoals: List<SpecificGoal>
+)
+
+data class SpecificGoal(
+    val emoji: String,
+    val name: String
+)
 
 /**
  * Feedback grades after collaboration (from whitepaper section 3.5)

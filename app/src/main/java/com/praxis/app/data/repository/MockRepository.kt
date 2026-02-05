@@ -160,16 +160,283 @@ class MockRepository {
         }
     }
     
-    // Predefined goal templates for onboarding
-    fun getGoalTemplates(): Map<Domain, List<String>> = mapOf(
-        Domain.FITNESS to listOf("Strength Training", "Cardio", "Yoga", "Weight Loss", "Muscle Gain"),
-        Domain.CAREER to listOf("Promotion", "Skill Learning", "Networking", "Start Business", "Career Change"),
-        Domain.MENTAL_HEALTH to listOf("Meditation", "Therapy", "Stress Management", "Better Sleep"),
-        Domain.ACADEMICS to listOf("Learn New Language", "Get Degree", "Online Course", "Read More"),
-        Domain.PHILOSOPHY to listOf("Study Stoicism", "Existentialism", "Ethics", "Mindfulness"),
-        Domain.INVESTING to listOf("Save Money", "Invest in Stocks", "Financial Independence", "Budget Better"),
-        Domain.CULTURE_HOBBIES to listOf("Learn Instrument", "Photography", "Painting", "Writing"),
-        Domain.INTIMACY_ROMANCE to listOf("Find Partner", "Improve Communication", "Date More"),
-        Domain.FRIENDSHIP_SOCIAL to listOf("Make New Friends", "Reconnect", "Join Community", "Be More Social")
+    // Predefined goal templates for onboarding with 4-level hierarchy
+    fun getGoalTemplates(): Map<Domain, List<GoalCategory>> = mapOf(
+        Domain.FITNESS to listOf(
+            GoalCategory("🏋️", "Strength & Muscle", listOf(
+                GoalSubcategory("💪", "Weight Training", listOf(
+                    SpecificGoal("🏋️‍♂️", "Powerlifting"),
+                    SpecificGoal("🦾", "Bodybuilding"),
+                    SpecificGoal("⚡", "CrossFit")
+                )),
+                GoalSubcategory("🤸", "Bodyweight", listOf(
+                    SpecificGoal("🧘", "Calisthenics"),
+                    SpecificGoal("🤸‍♀️", "Gymnastics")
+                ))
+            )),
+            GoalCategory("🏃", "Cardio & Endurance", listOf(
+                GoalSubcategory("🏃‍♂️", "Running", listOf(
+                    SpecificGoal("🎽", "Marathon Training"),
+                    SpecificGoal("🏅", "Sprint Training"),
+                    SpecificGoal("⛰️", "Trail Running")
+                )),
+                GoalSubcategory("🚴", "Cycling", listOf(
+                    SpecificGoal("🚵", "Mountain Biking"),
+                    SpecificGoal("🚴‍♀️", "Road Cycling")
+                ))
+            )),
+            GoalCategory("🧘", "Flexibility & Balance", listOf(
+                GoalSubcategory("🧘‍♀️", "Yoga", listOf(
+                    SpecificGoal("☮️", "Hatha Yoga"),
+                    SpecificGoal("🔥", "Hot Yoga"),
+                    SpecificGoal("🌊", "Flow Yoga")
+                )),
+                GoalSubcategory("🤸‍♂️", "Stretching", listOf(
+                    SpecificGoal("🦵", "Leg Flexibility"),
+                    SpecificGoal("🧘", "Full Body Mobility")
+                ))
+            ))
+        ),
+        
+        Domain.CAREER to listOf(
+            GoalCategory("📈", "Career Growth", listOf(
+                GoalSubcategory("⬆️", "Advancement", listOf(
+                    SpecificGoal("👔", "Get Promotion"),
+                    SpecificGoal("💼", "Leadership Role"),
+                    SpecificGoal("🎯", "Salary Increase")
+                )),
+                GoalSubcategory("🛠️", "Skills", listOf(
+                    SpecificGoal("💻", "Technical Skills"),
+                    SpecificGoal("🗣️", "Soft Skills"),
+                    SpecificGoal("🎓", "Certifications")
+                ))
+            )),
+            GoalCategory("🚀", "Entrepreneurship", listOf(
+                GoalSubcategory("💡", "Startup", listOf(
+                    SpecificGoal("🏢", "Launch Business"),
+                    SpecificGoal("📱", "Build MVP"),
+                    SpecificGoal("💰", "Raise Funding")
+                )),
+                GoalSubcategory("📊", "Side Business", listOf(
+                    SpecificGoal("🛍️", "E-commerce"),
+                    SpecificGoal("✍️", "Freelancing"),
+                    SpecificGoal("📸", "Creative Services")
+                ))
+            )),
+            GoalCategory("🌐", "Networking", listOf(
+                GoalSubcategory("🤝", "Professional Network", listOf(
+                    SpecificGoal("👥", "Industry Contacts"),
+                    SpecificGoal("🎤", "Public Speaking"),
+                    SpecificGoal("📣", "Personal Brand")
+                ))
+            ))
+        ),
+        
+        Domain.MENTAL_HEALTH to listOf(
+            GoalCategory("🧘", "Mindfulness", listOf(
+                GoalSubcategory("🧘‍♀️", "Meditation", listOf(
+                    SpecificGoal("⏰", "Daily Practice"),
+                    SpecificGoal("🎯", "Focused Meditation"),
+                    SpecificGoal("💭", "Transcendental")
+                )),
+                GoalSubcategory("🌅", "Breathing", listOf(
+                    SpecificGoal("😮‍💨", "Pranayama"),
+                    SpecificGoal("🧊", "Wim Hof Method")
+                ))
+            )),
+            GoalCategory("💚", "Therapy & Support", listOf(
+                GoalSubcategory("🗣️", "Therapy", listOf(
+                    SpecificGoal("💬", "Talk Therapy"),
+                    SpecificGoal("🧠", "CBT"),
+                    SpecificGoal("👥", "Group Therapy")
+                )),
+                GoalSubcategory("🤝", "Support", listOf(
+                    SpecificGoal("👨‍👩‍👧", "Support Groups"),
+                    SpecificGoal("📱", "Mental Health Apps")
+                ))
+            )),
+            GoalCategory("😴", "Sleep & Rest", listOf(
+                GoalSubcategory("🛌", "Sleep Quality", listOf(
+                    SpecificGoal("⏰", "Sleep Schedule"),
+                    SpecificGoal("🌙", "Sleep Hygiene"),
+                    SpecificGoal("📵", "Digital Detox")
+                ))
+            ))
+        ),
+        
+        Domain.ACADEMICS to listOf(
+            GoalCategory("🎓", "Formal Education", listOf(
+                GoalSubcategory("📚", "Degree Programs", listOf(
+                    SpecificGoal("🎓", "Bachelor's Degree"),
+                    SpecificGoal("📖", "Master's Degree"),
+                    SpecificGoal("🔬", "PhD")
+                )),
+                GoalSubcategory("📜", "Certifications", listOf(
+                    SpecificGoal("🏅", "Professional Cert"),
+                    SpecificGoal("💻", "Technical Cert")
+                ))
+            )),
+            GoalCategory("💻", "Self-Learning", listOf(
+                GoalSubcategory("🌐", "Online Courses", listOf(
+                    SpecificGoal("🎥", "Video Courses"),
+                    SpecificGoal("📱", "Mobile Learning"),
+                    SpecificGoal("🎓", "MOOCs")
+                )),
+                GoalSubcategory("📖", "Reading", listOf(
+                    SpecificGoal("📚", "Read More Books"),
+                    SpecificGoal("📰", "Research Papers"),
+                    SpecificGoal("✍️", "Take Notes")
+                ))
+            )),
+            GoalCategory("🗣️", "Languages", listOf(
+                GoalSubcategory("🌍", "Language Learning", listOf(
+                    SpecificGoal("🇪🇸", "Spanish"),
+                    SpecificGoal("🇫🇷", "French"),
+                    SpecificGoal("🇨🇳", "Mandarin"),
+                    SpecificGoal("🇯🇵", "Japanese")
+                ))
+            ))
+        ),
+        
+        Domain.PHILOSOPHY to listOf(
+            GoalCategory("📖", "Philosophical Schools", listOf(
+                GoalSubcategory("🏛️", "Ancient Philosophy", listOf(
+                    SpecificGoal("🗿", "Stoicism"),
+                    SpecificGoal("🏺", "Epicureanism"),
+                    SpecificGoal("💭", "Socratic Method")
+                )),
+                GoalSubcategory("🧠", "Modern Philosophy", listOf(
+                    SpecificGoal("❓", "Existentialism"),
+                    SpecificGoal("🌌", "Nihilism"),
+                    SpecificGoal("🔮", "Phenomenology")
+                ))
+            )),
+            GoalCategory("⚖️", "Ethics & Morality", listOf(
+                GoalSubcategory("💡", "Ethical Systems", listOf(
+                    SpecificGoal("⚖️", "Consequentialism"),
+                    SpecificGoal("📜", "Deontology"),
+                    SpecificGoal("💪", "Virtue Ethics")
+                ))
+            ))
+        ),
+        
+        Domain.INVESTING to listOf(
+            GoalCategory("💵", "Saving", listOf(
+                GoalSubcategory("🏦", "Emergency Fund", listOf(
+                    SpecificGoal("💰", "Build Emergency Fund"),
+                    SpecificGoal("📊", "Budget Better"),
+                    SpecificGoal("💳", "Reduce Debt")
+                ))
+            )),
+            GoalCategory("📈", "Investing", listOf(
+                GoalSubcategory("📊", "Stock Market", listOf(
+                    SpecificGoal("📈", "Index Funds"),
+                    SpecificGoal("🎯", "Individual Stocks"),
+                    SpecificGoal("💹", "Options Trading")
+                )),
+                GoalSubcategory("🏠", "Real Estate", listOf(
+                    SpecificGoal("🏡", "Buy Property"),
+                    SpecificGoal("🏘️", "Rental Income"),
+                    SpecificGoal("🏗️", "REITs")
+                )),
+                GoalSubcategory("₿", "Crypto", listOf(
+                    SpecificGoal("💎", "Long-term Hold"),
+                    SpecificGoal("📊", "Trading")
+                ))
+            )),
+            GoalCategory("🎯", "Financial Goals", listOf(
+                GoalSubcategory("🔥", "FIRE", listOf(
+                    SpecificGoal("🌴", "Early Retirement"),
+                    SpecificGoal("💰", "Financial Independence")
+                ))
+            ))
+        ),
+        
+        Domain.CULTURE_HOBBIES to listOf(
+            GoalCategory("🎵", "Music", listOf(
+                GoalSubcategory("🎸", "Instruments", listOf(
+                    SpecificGoal("🎹", "Piano"),
+                    SpecificGoal("🎸", "Guitar"),
+                    SpecificGoal("🥁", "Drums"),
+                    SpecificGoal("🎺", "Wind Instruments")
+                )),
+                GoalSubcategory("🎤", "Vocals", listOf(
+                    SpecificGoal("🎵", "Singing"),
+                    SpecificGoal("🎭", "Performance")
+                ))
+            )),
+            GoalCategory("🎨", "Visual Arts", listOf(
+                GoalSubcategory("🖌️", "Painting", listOf(
+                    SpecificGoal("🎨", "Oil Painting"),
+                    SpecificGoal("🖼️", "Watercolor"),
+                    SpecificGoal("✨", "Digital Art")
+                )),
+                GoalSubcategory("📸", "Photography", listOf(
+                    SpecificGoal("📷", "Portrait"),
+                    SpecificGoal("🌄", "Landscape"),
+                    SpecificGoal("📱", "Mobile Photography")
+                ))
+            )),
+            GoalCategory("✍️", "Writing", listOf(
+                GoalSubcategory("📖", "Creative Writing", listOf(
+                    SpecificGoal("📚", "Novel Writing"),
+                    SpecificGoal("📝", "Poetry"),
+                    SpecificGoal("📰", "Journalism")
+                ))
+            ))
+        ),
+        
+        Domain.INTIMACY_ROMANCE to listOf(
+            GoalCategory("💑", "Dating", listOf(
+                GoalSubcategory("🔍", "Finding Partner", listOf(
+                    SpecificGoal("📱", "Online Dating"),
+                    SpecificGoal("🎉", "Social Events"),
+                    SpecificGoal("👥", "Meetup Groups")
+                )),
+                GoalSubcategory("💬", "Communication", listOf(
+                    SpecificGoal("🗣️", "Better Conversations"),
+                    SpecificGoal("❤️", "Emotional Intelligence")
+                ))
+            )),
+            GoalCategory("💕", "Relationship Growth", listOf(
+                GoalSubcategory("🤝", "Partnership", listOf(
+                    SpecificGoal("💑", "Strengthen Bond"),
+                    SpecificGoal("🗣️", "Improve Communication"),
+                    SpecificGoal("🎯", "Shared Goals")
+                )),
+                GoalSubcategory("🔥", "Intimacy", listOf(
+                    SpecificGoal("💋", "Physical Intimacy"),
+                    SpecificGoal("💭", "Emotional Intimacy")
+                ))
+            ))
+        ),
+        
+        Domain.FRIENDSHIP_SOCIAL to listOf(
+            GoalCategory("👥", "Making Friends", listOf(
+                GoalSubcategory("🆕", "New Connections", listOf(
+                    SpecificGoal("🎉", "Join Groups"),
+                    SpecificGoal("🏃", "Sports Clubs"),
+                    SpecificGoal("🎮", "Hobby Communities")
+                )),
+                GoalSubcategory("🔄", "Reconnecting", listOf(
+                    SpecificGoal("📞", "Old Friends"),
+                    SpecificGoal("🎓", "Alumni Networks")
+                ))
+            )),
+            GoalCategory("🤝", "Social Skills", listOf(
+                GoalSubcategory("💬", "Communication", listOf(
+                    SpecificGoal("🗣️", "Conversation Skills"),
+                    SpecificGoal("👂", "Active Listening"),
+                    SpecificGoal("😊", "Social Confidence")
+                ))
+            )),
+            GoalCategory("🎪", "Community", listOf(
+                GoalSubcategory("🏘️", "Local Community", listOf(
+                    SpecificGoal("🤲", "Volunteering"),
+                    SpecificGoal("🎉", "Community Events"),
+                    SpecificGoal("🏛️", "Local Groups")
+                ))
+            ))
+        )
     )
 }
