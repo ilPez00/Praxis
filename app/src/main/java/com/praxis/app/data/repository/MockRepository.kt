@@ -1,6 +1,7 @@
 package com.praxis.app.data.repository
 
 import com.praxis.app.data.model.*
+import java.util.Calendar
 import java.util.UUID
 
 /**
@@ -12,19 +13,26 @@ class MockRepository {
     
     // Current logged-in user
     private var currentUser: User? = null
-    
+
     // Mock database of other users
     private val allUsers = mutableListOf<User>()
-    
+
     // User's matches
     private val matches = mutableListOf<Match>()
-    
+
     // Active collaborations
     private val collaborations = mutableListOf<Collaboration>()
-    
+
+    // Community achievements feed
+    private val achievements = mutableListOf<Achievement>()
+
+    // Community group rooms
+    private val groups = mutableListOf<Group>()
+
     init {
-        // Create some mock users for testing
         createMockUsers()
+        createMockAchievements()
+        createMockGroups()
     }
     
     /**
@@ -160,7 +168,170 @@ class MockRepository {
         }
     }
     
-    // Predefined goal templates for onboarding with 4-level hierarchy
+    // ─── Mock achievements ────────────────────────────────────────────────────
+
+    private fun createMockAchievements() {
+        val alexId = allUsers.getOrNull(0)?.id ?: UUID.randomUUID().toString()
+        val samId  = allUsers.getOrNull(1)?.id ?: UUID.randomUUID().toString()
+        val jordanId = allUsers.getOrNull(2)?.id ?: UUID.randomUUID().toString()
+
+        achievements.addAll(listOf(
+            Achievement(
+                userId = alexId,
+                userName = "Alex",
+                goalNodeId = UUID.randomUUID().toString(),
+                title = "Squatted 100kg for the first time! 🏋️",
+                description = "Six months of consistent training finally paid off. Hit my powerlifting milestone today.",
+                domain = Domain.FITNESS,
+                totalUpvotes = 24,
+                comments = listOf(
+                    AchievementComment(
+                        achievementId = "",
+                        userId = samId,
+                        userName = "Sam",
+                        content = "Incredible progress! What programme are you running?"
+                    ),
+                    AchievementComment(
+                        achievementId = "",
+                        userId = jordanId,
+                        userName = "Jordan",
+                        content = "Beast mode! Congrats 🔥"
+                    )
+                )
+            ),
+            Achievement(
+                userId = samId,
+                userName = "Sam",
+                goalNodeId = UUID.randomUUID().toString(),
+                title = "30-day meditation streak complete 🧘",
+                description = "Daily practice for a full month. Mental clarity is at an all-time high.",
+                domain = Domain.MENTAL_HEALTH,
+                totalUpvotes = 18,
+                comments = listOf(
+                    AchievementComment(
+                        achievementId = "",
+                        userId = alexId,
+                        userName = "Alex",
+                        content = "Such an inspiration. I need to start this too."
+                    )
+                )
+            ),
+            Achievement(
+                userId = jordanId,
+                userName = "Jordan",
+                goalNodeId = UUID.randomUUID().toString(),
+                title = "Launched MVP to first 50 users 🚀",
+                description = "After months of building, the product is finally live. First real user feedback coming in!",
+                domain = Domain.CAREER,
+                totalUpvotes = 41,
+                comments = emptyList()
+            ),
+            Achievement(
+                userId = alexId,
+                userName = "Alex",
+                goalNodeId = UUID.randomUUID().toString(),
+                title = "Finished reading 'Meditations' by Marcus Aurelius 📖",
+                description = "Best book I've read this year. Stoicism has completely changed my perspective.",
+                domain = Domain.PHILOSOPHY,
+                totalUpvotes = 12,
+                comments = listOf(
+                    AchievementComment(
+                        achievementId = "",
+                        userId = jordanId,
+                        userName = "Jordan",
+                        content = "A foundational read! Did you annotate it?"
+                    )
+                )
+            ),
+            Achievement(
+                userId = samId,
+                userName = "Sam",
+                goalNodeId = UUID.randomUUID().toString(),
+                title = "Ran my first 10km race 🏅",
+                description = "Crossed the finish line in 52 minutes. Two months ago I could barely run 2km.",
+                domain = Domain.FITNESS,
+                totalUpvotes = 33,
+                comments = emptyList()
+            )
+        ))
+    }
+
+    fun getAchievements(): List<Achievement> = achievements.toList()
+
+    fun upvoteAchievement(achievementId: String) {
+        val idx = achievements.indexOfFirst { it.id == achievementId }
+        if (idx != -1) {
+            val a = achievements[idx]
+            achievements[idx] = a.copy(totalUpvotes = a.totalUpvotes + 1)
+        }
+    }
+
+    // ─── Mock groups ──────────────────────────────────────────────────────────
+
+    private fun createMockGroups() {
+        groups.addAll(listOf(
+            Group(
+                name = "Powerlifters Hub",
+                description = "Serious lifters sharing programming, technique tips, and PRs. All levels welcome.",
+                domain = Domain.FITNESS,
+                memberCount = 142,
+                isJoined = false
+            ),
+            Group(
+                name = "Founders & Builders",
+                description = "Accountability group for indie hackers and startup founders. Share wins, get feedback.",
+                domain = Domain.CAREER,
+                memberCount = 87,
+                isJoined = true
+            ),
+            Group(
+                name = "Daily Stoics",
+                description = "Morning passages, journalling prompts, and philosophical discussions rooted in Stoicism.",
+                domain = Domain.PHILOSOPHY,
+                memberCount = 56,
+                isJoined = false
+            ),
+            Group(
+                name = "Mindfulness & Meditation",
+                description = "Guided sessions, streak tracking, and a supportive space for mental wellness journeys.",
+                domain = Domain.MENTAL_HEALTH,
+                memberCount = 203,
+                isJoined = false
+            ),
+            Group(
+                name = "Financial Freedom Seekers",
+                description = "FIRE movement, index funds, real estate, crypto — all things financial independence.",
+                domain = Domain.INVESTING,
+                memberCount = 119,
+                isJoined = false
+            )
+        ))
+    }
+
+    fun getGroups(): List<Group> = groups.toList()
+
+    fun joinGroup(groupId: String) {
+        val idx = groups.indexOfFirst { it.id == groupId }
+        if (idx != -1) {
+            val g = groups[idx]
+            groups[idx] = g.copy(isJoined = true, memberCount = g.memberCount + 1)
+        }
+    }
+
+    fun createGroup(name: String, description: String, domain: Domain): Group {
+        val newGroup = Group(
+            name = name,
+            description = description,
+            domain = domain,
+            creatorId = currentUser?.id ?: "",
+            memberCount = 1,
+            isJoined = true
+        )
+        groups.add(newGroup)
+        return newGroup
+    }
+
+    // ─── Predefined goal templates for onboarding with 4-level hierarchy ─────
     fun getGoalTemplates(): Map<Domain, List<GoalCategory>> = mapOf(
         Domain.FITNESS to listOf(
             GoalCategory("🏋️", "Strength & Muscle", listOf(

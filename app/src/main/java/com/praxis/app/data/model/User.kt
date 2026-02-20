@@ -11,6 +11,9 @@ data class User(
     val age: Int,
     val bio: String = "",
     val isVerified: Boolean = false,
+    val isPremium: Boolean = false,
+    val currentStreak: Int = 0,    // Days of consecutive activity
+    val praxisPoints: Int = 100,   // Points for accountability betting
     val goalTree: MutableList<GoalNode> = mutableListOf()
 ) {
     /**
@@ -19,12 +22,13 @@ data class User(
      * Premium: unlimited
      */
     fun getPrimaryGoals(): List<GoalNode> = goalTree
-    
+
     /**
-     * Adds a new primary goal to the tree
+     * Adds a new primary goal to the tree.
+     * Free tier is capped at 3; Premium has no limit.
      */
     fun addPrimaryGoal(goal: GoalNode) {
-        if (goalTree.size < 3) { // Free tier limit
+        if (isPremium || goalTree.size < 3) {
             goalTree.add(goal)
         }
     }
