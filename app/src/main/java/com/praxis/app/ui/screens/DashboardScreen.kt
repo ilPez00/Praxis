@@ -57,7 +57,26 @@ fun DashboardScreen(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // 1. Welcome banner
+        // 1. Screen header with info button
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Dashboard",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                InfoButton(
+                    title = "Your Dashboard",
+                    description = "Your mission control. See your active streak 🔥, Praxis Points, and shortcuts to every section. The AI Coach (Premium) gives personalised advice. Below you'll find your top goals, best matches, and the global achievement feed."
+                )
+            }
+        }
+
+        // 2. Welcome banner
         item {
             WelcomeBanner(
                 user = user,

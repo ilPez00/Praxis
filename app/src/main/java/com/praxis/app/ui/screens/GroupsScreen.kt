@@ -51,12 +51,23 @@ fun GroupsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            Text(
-                text = "Community Groups",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 8.dp)
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, top = 16.dp, end = 4.dp, bottom = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Community Groups",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                InfoButton(
+                    title = "Community Groups",
+                    description = "Domain-specific rooms where people working on the same life area connect, share wins, and encourage each other. Join existing groups or create your own."
+                )
+            }
 
             TabRow(selectedTabIndex = selectedTab) {
                 Tab(

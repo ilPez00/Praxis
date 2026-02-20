@@ -59,6 +59,10 @@ fun ChatScreen(
                     }
                 },
                 actions = {
+                    InfoButton(
+                        title = "Direct Message",
+                        description = "A private, goal-focused channel between you and your accountability partner. Use it to coordinate on shared goals, share progress updates, and keep each other on track."
+                    )
                     TextButton(onClick = onCompleteCollaboration) {
                         Text("Complete & Grade")
                     }

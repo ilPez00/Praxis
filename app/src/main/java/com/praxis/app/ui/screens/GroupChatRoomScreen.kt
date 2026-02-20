@@ -103,6 +103,12 @@ fun GroupChatRoomScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
+                },
+                actions = {
+                    InfoButton(
+                        title = "Group Chat",
+                        description = "A live group conversation for this domain community. Every member of the group can read and send messages."
+                    )
                 }
             )
         },

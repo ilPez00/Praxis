@@ -1,106 +1,86 @@
 package com.praxis.app.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// Praxis brand colors - refined Apple-style palette
-private val PraxisPrimary = Color(0xFF007AFF)  // iOS Blue
-private val PraxisSecondary = Color(0xFF5856D6) // iOS Purple
-private val PraxisTertiary = Color(0xFFFF9500)  // iOS Orange
+// ─── Brand palette — mirrors praxis_webapp MUI theme ──────────────────────────
 
-// Light theme colors
-private val LightSurface = Color(0xFFFAFAFA)
-private val LightSurfaceVariant = Color(0xFFF2F2F7)
-private val LightBackground = Color(0xFFFFFFFF)
-private val LightOnSurface = Color(0xFF1C1C1E)
-private val LightOnSurfaceVariant = Color(0xFF8E8E93)
+// Primary: Amber-gold (#F59E0B)
+private val Amber500    = Color(0xFFF59E0B)
+private val AmberDark   = Color(0xFF92400E)
+private val AmberLight  = Color(0xFFFDE68A)
+private val AmberOnPrim = Color(0xFF0A0B14)
 
-// Dark theme colors
-private val DarkSurface = Color(0xFF1C1C1E)
-private val DarkSurfaceVariant = Color(0xFF2C2C2E)
-private val DarkBackground = Color(0xFF000000)
-private val DarkOnSurface = Color(0xFFFFFFFF)
-private val DarkOnSurfaceVariant = Color(0xFF8E8E93)
+// Secondary: Electric violet (#8B5CF6)
+private val Violet400       = Color(0xFF8B5CF6)
+private val VioletDark      = Color(0xFF4C1D95)
+private val VioletLight     = Color(0xFFEDE9FE)
 
-private val DarkColorScheme = darkColorScheme(
-    primary = PraxisPrimary,
-    onPrimary = Color.White,
-    primaryContainer = Color(0xFF0051A8),
-    onPrimaryContainer = Color(0xFFD4E3FF),
-    
-    secondary = PraxisSecondary,
-    onSecondary = Color.White,
-    secondaryContainer = Color(0xFF3D3C84),
-    onSecondaryContainer = Color(0xFFE1E0FF),
-    
-    tertiary = PraxisTertiary,
-    onTertiary = Color.White,
-    tertiaryContainer = Color(0xFFB36A00),
-    onTertiaryContainer = Color(0xFFFFDDB3),
-    
-    background = DarkBackground,
-    onBackground = DarkOnSurface,
-    
-    surface = DarkSurface,
-    onSurface = DarkOnSurface,
-    surfaceVariant = DarkSurfaceVariant,
-    onSurfaceVariant = DarkOnSurfaceVariant,
-    
-    error = Color(0xFFFF453A),
-    onError = Color.White,
-    
-    outline = Color(0xFF48484A),
-    outlineVariant = Color(0xFF3A3A3C)
-)
+// Tertiary: Emerald (#10B981) — used for success / streak
+private val Emerald500      = Color(0xFF10B981)
+private val EmeraldDark     = Color(0xFF065F46)
+private val EmeraldLight    = Color(0xFFD1FAE5)
 
-private val LightColorScheme = lightColorScheme(
-    primary = PraxisPrimary,
-    onPrimary = Color.White,
-    primaryContainer = Color(0xFFD4E3FF),
-    onPrimaryContainer = Color(0xFF001C3A),
-    
-    secondary = PraxisSecondary,
-    onSecondary = Color.White,
-    secondaryContainer = Color(0xFFE1E0FF),
-    onSecondaryContainer = Color(0xFF1C1B5B),
-    
-    tertiary = PraxisTertiary,
-    onTertiary = Color.White,
-    tertiaryContainer = Color(0xFFFFDDB3),
-    onTertiaryContainer = Color(0xFF2E1500),
-    
-    background = LightBackground,
-    onBackground = LightOnSurface,
-    
-    surface = LightSurface,
-    onSurface = LightOnSurface,
-    surfaceVariant = LightSurfaceVariant,
-    onSurfaceVariant = LightOnSurfaceVariant,
-    
-    error = Color(0xFFFF3B30),
-    onError = Color.White,
-    
-    outline = Color(0xFFC6C6C8),
-    outlineVariant = Color(0xFFE5E5EA)
+// Backgrounds — deep dark, matching webapp #0A0B14 / #111827 / #1F2937
+private val BgDeep          = Color(0xFF0A0B14)
+private val BgSurface       = Color(0xFF111827)
+private val BgSurfaceVar    = Color(0xFF1F2937)
+
+// Text
+private val TextPrimary     = Color(0xFFF9FAFB)
+private val TextSecondary   = Color(0xFF9CA3AF)
+
+// Borders
+private val OutlineColor    = Color(0xFF374151)
+private val OutlineVarColor = Color(0xFF1F2937)
+
+// Error
+private val ErrorColor      = Color(0xFFEF4444)
+
+// ─── Single dark color scheme (Praxis is dark-only, like the webapp) ──────────
+
+private val PraxisColorScheme = darkColorScheme(
+    primary              = Amber500,
+    onPrimary            = AmberOnPrim,
+    primaryContainer     = AmberDark,
+    onPrimaryContainer   = AmberLight,
+
+    secondary            = Violet400,
+    onSecondary          = Color.White,
+    secondaryContainer   = VioletDark,
+    onSecondaryContainer = VioletLight,
+
+    tertiary             = Emerald500,
+    onTertiary           = Color.White,
+    tertiaryContainer    = EmeraldDark,
+    onTertiaryContainer  = EmeraldLight,
+
+    background           = BgDeep,
+    onBackground         = TextPrimary,
+
+    surface              = BgSurface,
+    onSurface            = TextPrimary,
+    surfaceVariant       = BgSurfaceVar,
+    onSurfaceVariant     = TextSecondary,
+
+    error                = ErrorColor,
+    onError              = Color.White,
+
+    outline              = OutlineColor,
+    outlineVariant       = OutlineVarColor,
+
+    inverseSurface       = TextPrimary,
+    inverseOnSurface     = BgDeep,
+    inversePrimary       = AmberDark,
 )
 
 @Composable
-fun PraxisTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Disable dynamic color for consistent branding
-    content: @Composable () -> Unit
-) {
-    val colorScheme = when {
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
+fun PraxisTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = PraxisTypography,
-        shapes = PraxisShapes,
-        content = content
+        colorScheme = PraxisColorScheme,
+        typography  = PraxisTypography,
+        shapes      = PraxisShapes,
+        content     = content
     )
 }

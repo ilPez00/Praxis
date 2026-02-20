@@ -57,12 +57,22 @@ fun HomeScreenWithTree(
         ) {
             // Header
             item {
-                Text(
-                    text = "Your Journey",
-                    fontSize = 34.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Your Journey",
+                        fontSize = 34.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    InfoButton(
+                        title = "Your Goal Tree",
+                        description = "Visualise every goal you're tracking. Tap '+' to log progress on any goal. Goals are colour-coded by life domain. The tree expands as you add sub-goals."
+                    )
+                }
             }
             
             // Tree Visualization Card

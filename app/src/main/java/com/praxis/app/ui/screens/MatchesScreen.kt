@@ -41,9 +41,15 @@ fun MatchesTab(
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold
             )
-            
-            IconButton(onClick = onFindMatches) {
-                Icon(Icons.Default.Search, "Find new matches")
+
+            Row {
+                InfoButton(
+                    title = "Accountability Matches",
+                    description = "Partners ranked by SAB alignment — a composite score of how well your goals, domain priorities, and collaboration style overlap. Tap a match to open a private chat."
+                )
+                IconButton(onClick = onFindMatches) {
+                    Icon(Icons.Default.Search, "Find new matches")
+                }
             }
         }
         

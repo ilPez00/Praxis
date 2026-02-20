@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.Circle
@@ -51,6 +51,9 @@ import java.util.UUID
  * Goal Selection Screen
  * Users select up to 3 primary goals (free tier)
  * Implements 4-level hierarchy: Macrogroup → Intermediate → Specific → Custom Details
+ *
+ * Layout fix (Session 23): replaced nested LazyColumns with verticalScroll + forEach
+ * so the "Start Matching" button is always reachable by scrolling.
  */
 @Composable
 fun GoalSelectionScreen(
@@ -58,7 +61,7 @@ fun GoalSelectionScreen(
     onComplete: (List<GoalNode>) -> Unit
 ) {
     var selectedGoals by remember { mutableStateOf(listOf<GoalNode>()) }
-    var currentStep by remember { mutableStateOf(0) } 
+    var currentStep by remember { mutableStateOf(0) }
     // 0 = select domain, 1 = select category, 2 = select subcategory, 3 = select specific goal, 4 = details
     var selectedDomain by remember { mutableStateOf<Domain?>(null) }
     var selectedCategory by remember { mutableStateOf<GoalCategory?>(null) }
@@ -66,24 +69,37 @@ fun GoalSelectionScreen(
     var selectedSpecificGoal by remember { mutableStateOf<SpecificGoal?>(null) }
     var pendingGoalDetails by remember { mutableStateOf("") }
 
+    // Single scrollable Column — no nested LazyColumns to avoid layout conflicts
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        // Header
-        Text(
-            text = "Build Your Goal Tree",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+        // Header row with info button
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Build Your Goal Tree",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            )
+            InfoButton(
+                title = "Goal Tree Setup",
+                description = "Choose up to 3 primary goals across 9 life domains (free tier). " +
+                    "Each goal follows a 4-level path: Domain → Category → Subcategory → Specific Goal. " +
+                    "You can always add more goals from your profile."
+            )
+        }
 
         Text(
             text = "Select up to 3 primary goals (${selectedGoals.size}/3)",
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
         )
 
         // Show selected goals summary
@@ -116,7 +132,7 @@ fun GoalSelectionScreen(
             }
         }
 
-        // Main content: 4-level navigation
+        // Main content: 4-level navigation (plain Column + forEach — no nested LazyColumn)
         when (currentStep) {
             0 -> {
                 // Step 1: Select Domain (Macrogroup)
@@ -126,20 +142,17 @@ fun GoalSelectionScreen(
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
-
-                LazyColumn {
-                    items(Domain.values().toList()) { domain ->
-                        DomainCard(
-                            domain = domain,
-                            onClick = {
-                                selectedDomain = domain
-                                currentStep = 1
-                            }
-                        )
-                    }
+                Domain.values().forEach { domain ->
+                    DomainCard(
+                        domain = domain,
+                        onClick = {
+                            selectedDomain = domain
+                            currentStep = 1
+                        }
+                    )
                 }
             }
-            
+
             1 -> {
                 // Step 2: Select Category (Intermediate Subgroup)
                 selectedDomain?.let { domain ->
@@ -162,21 +175,18 @@ fun GoalSelectionScreen(
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-
-                    LazyColumn {
-                        items(goalTemplates[domain] ?: emptyList()) { category ->
-                            CategoryCard(
-                                category = category,
-                                onClick = {
-                                    selectedCategory = category
-                                    currentStep = 2
-                                }
-                            )
-                        }
+                    (goalTemplates[domain] ?: emptyList()).forEach { category ->
+                        CategoryCard(
+                            category = category,
+                            onClick = {
+                                selectedCategory = category
+                                currentStep = 2
+                            }
+                        )
                     }
                 }
             }
-            
+
             2 -> {
                 // Step 3: Select Subcategory (Specific Subgroup)
                 selectedCategory?.let { category ->
@@ -199,21 +209,18 @@ fun GoalSelectionScreen(
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-
-                    LazyColumn {
-                        items(category.subcategories) { subcategory ->
-                            SubcategoryCard(
-                                subcategory = subcategory,
-                                onClick = {
-                                    selectedSubcategory = subcategory
-                                    currentStep = 3
-                                }
-                            )
-                        }
+                    category.subcategories.forEach { subcategory ->
+                        SubcategoryCard(
+                            subcategory = subcategory,
+                            onClick = {
+                                selectedSubcategory = subcategory
+                                currentStep = 3
+                            }
+                        )
                     }
                 }
             }
-            
+
             3 -> {
                 // Step 4: Select Specific Goal
                 selectedSubcategory?.let { subcategory ->
@@ -236,22 +243,19 @@ fun GoalSelectionScreen(
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-
-                    LazyColumn {
-                        items(subcategory.specificGoals) { specificGoal ->
-                            SpecificGoalCard(
-                                specificGoal = specificGoal,
-                                isSelected = selectedGoals.any { it.name == specificGoal.name },
-                                onClick = {
-                                    selectedSpecificGoal = specificGoal
-                                    currentStep = 4
-                                }
-                            )
-                        }
+                    subcategory.specificGoals.forEach { specificGoal ->
+                        SpecificGoalCard(
+                            specificGoal = specificGoal,
+                            isSelected = selectedGoals.any { it.name == specificGoal.name },
+                            onClick = {
+                                selectedSpecificGoal = specificGoal
+                                currentStep = 4
+                            }
+                        )
                     }
                 }
             }
-            
+
             4 -> {
                 // Step 5: Enter Custom Details
                 selectedSpecificGoal?.let { specificGoal ->
@@ -274,14 +278,14 @@ fun GoalSelectionScreen(
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-                    
+
                     Text(
                         text = "Describe your goal in detail",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
-                    
+
                     OutlinedTextField(
                         value = pendingGoalDetails,
                         onValueChange = { pendingGoalDetails = it },
@@ -293,9 +297,9 @@ fun GoalSelectionScreen(
                         minLines = 4,
                         maxLines = 6
                     )
-                    
+
                     Spacer(modifier = Modifier.height(16.dp))
-                    
+
                     Button(
                         onClick = {
                             selectedDomain?.let { domain ->
@@ -328,7 +332,7 @@ fun GoalSelectionScreen(
             }
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Tree preview + complete button
         if (selectedGoals.isNotEmpty()) {

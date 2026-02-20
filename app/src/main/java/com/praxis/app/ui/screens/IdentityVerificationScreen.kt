@@ -48,6 +48,12 @@ fun IdentityVerificationScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
+                },
+                actions = {
+                    InfoButton(
+                        title = "Identity Verification",
+                        description = "A quick on-device face scan that earns you a verified ✓ badge, visible to potential partners. Verification boosts match quality and community trust. All analysis runs locally — no biometric data ever leaves your phone."
+                    )
                 }
             )
         }

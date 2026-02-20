@@ -104,7 +104,7 @@ class PraxisViewModel : ViewModel() {
         }
         updateNode(user.goalTree)
         // Trigger recomposition by emitting a new reference
-        _currentUser.value = user.copy(goalTree = user.goalTree)
+        _currentUser.value = user.copy(goalTree = user.goalTree.toMutableList())
     }
 
     // ─── Achievements ─────────────────────────────────────────────────────────

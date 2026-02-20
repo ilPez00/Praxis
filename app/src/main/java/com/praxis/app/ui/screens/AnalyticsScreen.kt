@@ -44,6 +44,12 @@ fun AnalyticsScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
+                },
+                actions = {
+                    InfoButton(
+                        title = "Performance Analytics",
+                        description = "Deep insights into your progress: achievement rate, domain performance breakdown, and how you compare to the Praxis community average. This is a Premium feature — upgrade to unlock."
+                    )
                 }
             )
         }

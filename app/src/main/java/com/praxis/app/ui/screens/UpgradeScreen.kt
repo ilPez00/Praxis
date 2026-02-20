@@ -49,6 +49,12 @@ fun UpgradeScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
+                },
+                actions = {
+                    InfoButton(
+                        title = "Praxis Premium",
+                        description = "Unlock the full Praxis experience: unlimited goals (vs 3 free), AI Performance Coach, Advanced Analytics, priority matching, and access to all group rooms. \$9.99/month. Cancel any time."
+                    )
                 }
             )
         }

@@ -59,11 +59,21 @@ fun ProfileTab(user: User) {
     ) {
         item {
             // Header
-            Text(
-                text = user.name,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = user.name,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                InfoButton(
+                    title = "Your Profile",
+                    description = "Your public Praxis profile. Partners see your name, bio, and goal tree when you match. Keep your goals up-to-date to attract the most relevant accountability partners."
+                )
+            }
 
             Text(
                 text = "${user.age} years old",
