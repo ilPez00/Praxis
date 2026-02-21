@@ -173,6 +173,41 @@ fun DashboardScreen(
             )
         }
 
+        // 7. Community Challenges (stub — Coming Soon)
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Community Challenges",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Surface(
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Text(
+                        text = "Coming Soon",
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                    )
+                }
+            }
+        }
+        items(
+            listOf(
+                Triple("30-Day Fitness Streak", Domain.FITNESS, "234 joined · 7d left"),
+                Triple("Read One Book This Month", Domain.CULTURE_HOBBIES, "156 joined · 12d left"),
+                Triple("21-Day Daily Meditation", Domain.MENTAL_HEALTH, "89 joined · 21d left"),
+            )
+        ) { (title, domain, meta) ->
+            CommunityChallengeCard(title = title, domain = domain, meta = meta)
+        }
+
         item { Spacer(modifier = Modifier.height(16.dp)) }
     }
 
@@ -617,6 +652,48 @@ fun AchievementCard(
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+            }
+        }
+    }
+}
+
+// ─── Community challenge card ─────────────────────────────────────────────────
+
+@Composable
+private fun CommunityChallengeCard(title: String, domain: Domain, meta: String) {
+    val color = domain.getColor()
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.06f)),
+        border = BorderStroke(1.dp, color.copy(alpha = 0.25f))
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = color
+                )
+                Text(
+                    text = "${domain.displayName()} · $meta",
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
+            }
+            Button(
+                onClick = {},
+                enabled = false,
+                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp)
+            ) {
+                Text("Join", fontSize = 12.sp)
             }
         }
     }
