@@ -99,8 +99,9 @@ fun PraxisApp() {
                 )
             }
 
-            if (showGradingDialog && currentMatchForGrading != null) {
-                val m = viewModel.getMatch(currentMatchForGrading!!)
+            val pendingMatchId = currentMatchForGrading
+            if (showGradingDialog && pendingMatchId != null) {
+                val m = viewModel.getMatch(pendingMatchId)
                 m?.let {
                     GradingDialog(
                         matchName = it.userName,

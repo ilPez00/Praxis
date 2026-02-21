@@ -24,7 +24,7 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -90,7 +90,7 @@ fun ProfileTab(user: User) {
                 )
             }
 
-            Divider(modifier = Modifier.padding(vertical = 16.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
 
             Text(
                 text = "Your Goal Tree",
@@ -127,7 +127,8 @@ fun ProfileTab(user: User) {
                         }
                         Column {
                             Text("Avg Progress", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            val avgProgress = user.getPrimaryGoals().map { it.progress }.average().toInt()
+                            val primaryGoals = user.getPrimaryGoals()
+                            val avgProgress = if (primaryGoals.isEmpty()) 0 else primaryGoals.map { it.progress }.average().toInt()
                             Text("$avgProgress%", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                         }
                     }
@@ -225,7 +226,7 @@ fun GoalTreeNode(
                         Text("${node.progress}%", fontSize = 12.sp, fontWeight = FontWeight.Medium)
                     }
                     LinearProgressIndicator(
-                        progress = node.progress / 100f,
+                        progress = { node.progress / 100f },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 4.dp),

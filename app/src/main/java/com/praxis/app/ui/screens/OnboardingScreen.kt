@@ -243,7 +243,7 @@ fun OnboardingScreen(
         }
         if (signInError != null) {
             Text(
-                text = signInError!!,
+                text = signInError ?: "",
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(bottom = 8.dp)
             )

@@ -261,7 +261,7 @@ private fun WelcomeBanner(
                         ) {
                             Text("🔥", fontSize = 16.sp)
                             Text(
-                                text = " ${user!!.currentStreak} day streak",
+                                text = " ${user?.currentStreak ?: 0} day streak",
                                 fontSize = 14.sp,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                             )
@@ -737,7 +737,7 @@ private fun AchievementDetailDialog(
                 }
 
                 if (achievement.comments.isNotEmpty()) {
-                    Divider(modifier = Modifier.padding(vertical = 12.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
                     Text(
                         text = "Comments (${achievement.comments.size})",
                         fontSize = 15.sp,
