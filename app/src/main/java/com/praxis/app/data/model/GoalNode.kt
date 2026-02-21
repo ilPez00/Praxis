@@ -87,6 +87,21 @@ enum class Domain {
         INTIMACY_ROMANCE -> "❤️"
         FRIENDSHIP_SOCIAL -> "👥"
     }
+
+    companion object {
+        fun fromString(value: String): Domain = when (value.uppercase()) {
+            "CAREER" -> CAREER
+            "INVESTING" -> INVESTING
+            "FITNESS" -> FITNESS
+            "ACADEMICS" -> ACADEMICS
+            "MENTAL_HEALTH", "MENTAL HEALTH" -> MENTAL_HEALTH
+            "PHILOSOPHY" -> PHILOSOPHY
+            "CULTURE_HOBBIES", "CULTURE & HOBBIES" -> CULTURE_HOBBIES
+            "INTIMACY_ROMANCE", "INTIMACY & ROMANCE" -> INTIMACY_ROMANCE
+            "FRIENDSHIP_SOCIAL", "FRIENDSHIP & SOCIAL" -> FRIENDSHIP_SOCIAL
+            else -> CAREER
+        }
+    }
 }
 
 /**

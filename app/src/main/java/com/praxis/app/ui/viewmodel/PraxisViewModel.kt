@@ -2,6 +2,7 @@ package com.praxis.app.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.praxis.app.data.ApiRepository
 import com.praxis.app.data.matching.MatchingEngine
 import com.praxis.app.data.model.*
 import com.praxis.app.data.repository.MockRepository
@@ -21,6 +22,7 @@ class PraxisViewModel : ViewModel() {
 
     private val repository = MockRepository()
     private val matchingEngine = MatchingEngine()
+    private val apiRepo = ApiRepository()
 
     // ─── Navigation state ─────────────────────────────────────────────────────
 
@@ -64,6 +66,63 @@ class PraxisViewModel : ViewModel() {
         repository.updateUserGoals(goals.toMutableList())
         _currentUser.value = repository.getCurrentUser()
         _uiState.value = PraxisUiState.Main()
+    }
+
+    // ─── Real backend integration ─────────────────────────────────────────────
+
+    /**
+     * Called after successful Firebase sign-in with the user's Firebase UID.
+     * Loads the real profile, goal tree, matches and achievements from the backend.
+     * Falls back to the mock user if the network call fails.
+     */
+    fun signInWithFirebaseUid(firebaseUid: String, fallbackName: String, fallbackAge: Int, fallbackBio: String) {
+        val mockUser = repository.createUser(fallbackName, fallbackAge, fallbackBio)
+        viewModelScope.launch {
+            apiRepo.getProfile(firebaseUid)
+                .onSuccess { user ->
+                    apiRepo.getGoalTree(firebaseUid).onSuccess { goals ->
+                        _currentUser.value = user.copy(goalTree = goals.toMutableList())
+                    }.onFailure {
+                        _currentUser.value = user
+                    }
+                    loadMatchesAndAchievements(firebaseUid)
+                }
+                .onFailure {
+                    _currentUser.value = mockUser
+                }
+            _uiState.value = PraxisUiState.Main()
+        }
+    }
+
+    /**
+     * Loads (or reloads) a user's data from the real backend.
+     * On failure, falls back to the provided mock user reference.
+     */
+    fun loadUserData(userId: String) {
+        val mockUser = _currentUser.value
+        viewModelScope.launch {
+            apiRepo.getProfile(userId)
+                .onSuccess { user ->
+                    apiRepo.getGoalTree(userId).onSuccess { goals ->
+                        _currentUser.value = user.copy(goalTree = goals.toMutableList())
+                    }.onFailure {
+                        _currentUser.value = user
+                    }
+                    loadMatchesAndAchievements(userId)
+                }
+                .onFailure {
+                    if (mockUser != null) _currentUser.value = mockUser
+                }
+        }
+    }
+
+    private suspend fun loadMatchesAndAchievements(userId: String) {
+        apiRepo.getMatches(userId).onSuccess { matches ->
+            _matches.value = matches
+        }
+        apiRepo.getAchievements().onSuccess { achievements ->
+            _achievements.value = achievements
+        }
     }
 
     // ─── Matching ─────────────────────────────────────────────────────────────
